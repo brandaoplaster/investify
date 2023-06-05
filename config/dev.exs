@@ -4,7 +4,7 @@ import Config
 config :investify, Investify.Repo,
   username: "postgres",
   password: "postgres",
-  hostname: "localhost",
+  hostname: "investify_db",
   database: "investify_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
@@ -19,14 +19,22 @@ config :investify, Investify.Repo,
 config :investify, InvestifyWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: 4000],
+  http: [ip: {0, 0, 0, 0}, port: 4000],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
   secret_key_base: "u9yL7XTAGortg6fq8x3hqTwysPCs9vGEq/3ZhEU3sf8dME/9MoWLhdVtydcpDK0G",
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    npx: [
+      "tailwindcss",
+      "--input=css/app.css",
+      "--output=../priv/static/assets/app.css",
+      "--postcss",
+      "--watch",
+      cd: Path.expand("../assets", __DIR__)
+    ]
   ]
 
 # ## SSL Support
