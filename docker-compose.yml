@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  investify:
+    build:
+      context: .
+      target: build
+    restart: unless-stopped
+    container_name: investify
+    command: mix phx.server
+    env_file:
+      - .env
+    depends_on:
+      - investify_db
+    ports:
+      - 4000:4000
+    volumes:
+      - .:/app
+    networks:
+      - investify_net
+
+  investify_db:
+    image: 'postgres:13'
+    container_name: investify_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_PASSWORD: 'postgres'
+    volumes:
+      - 'investify_db:/var/lib/postgresql/data'
+    networks:
+      - investify_net
+
+volumes:
+  investify_db:
+
+networks:
+  investify_net:
+    name: investify_net
