@@ -50,6 +50,8 @@ defmodule InvestifyWeb.Router do
   scope "/", InvestifyWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
+    live "/my_dashboard", Dashboard.DashboardLive, :index
+
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{InvestifyWeb.UserAuth, :redirect_if_user_is_authenticated}] do
       live "/users/register", UserRegistrationLive, :new
