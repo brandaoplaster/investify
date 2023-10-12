@@ -184,7 +184,7 @@ defmodule InvestifyWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="mt-10 space-y-8 bg-white">
+      <div class="mt-8 space-y-6">
         <%= render_slot(@inner_block, f) %>
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           <%= render_slot(action, f) %>
@@ -210,15 +210,7 @@ defmodule InvestifyWeb.CoreComponents do
 
   def button(assigns) do
     ~H"""
-    <button
-      type={@type}
-      class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
-        "text-sm font-semibold leading-6 text-white active:text-white/80",
-        @class
-      ]}
-      {@rest}
-    >
+    <button type={@type} class={@class} {@rest}>
       <%= render_slot(@inner_block) %>
     </button>
     """
@@ -337,7 +329,6 @@ defmodule InvestifyWeb.CoreComponents do
   def input(assigns) do
     ~H"""
     <div phx-feedback-for={@name}>
-      <.label for={@id}><%= @label %></.label>
       <input
         type={@type}
         name={@name}
@@ -360,11 +351,12 @@ defmodule InvestifyWeb.CoreComponents do
   Renders a label.
   """
   attr :for, :string, default: nil
+  attr :class, :string, default: nil
   slot :inner_block, required: true
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="block text-sm font-semibold leading-6 text-zinc-800">
+    <label for={@for} class={@class}>
       <%= render_slot(@inner_block) %>
     </label>
     """
